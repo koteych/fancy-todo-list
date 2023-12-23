@@ -11,6 +11,13 @@ const searchButton = document.querySelector('.search-button');
 const searchField = document.querySelector('.search-field');
 const selectedDate = document.querySelector('.selected-date');
 
+todoListContainer.addEventListener('click', (e) => {
+  if (String(e.target.tagName).toLowerCase() === 'button') {
+      $("#todo-short-description").text("New text in the dialog");
+      $( "#dialog-message" ).dialog('open');
+  }
+})
+
 searchButton.addEventListener('click', (e) => {
   const searchString = searchField.value;
   getTodoByName(searchString, (data) => {
@@ -20,7 +27,7 @@ searchButton.addEventListener('click', (e) => {
 
     const todos = [];
     for (const retrievedTodo of data) {
-      todos.push(new Todo(null, retrievedTodo.name, retrievedTodo.shortDesc, '', retrievedTodo.date));
+      todos.push(new Todo(retrievedTodo.id, retrievedTodo.name, retrievedTodo.shortDesc, '', retrievedTodo.date));
     }
 
     console.log('formed todos');
@@ -80,6 +87,7 @@ function appendTodo(containerElement, todo) {
   const moreButton = document.createElement('button');
   moreButton.className = 'todo__more-button';
   moreButton.textContent = 'Подробнее';
+  moreButton.id = todo.id;
 
   todoElement.appendChild(moreButton);
 
@@ -95,7 +103,7 @@ window.addEventListener('DOMContentLoaded', (e) => {
 
     const todos = [];
     for (const retrievedTodo of data) {
-      todos.push(new Todo(null, retrievedTodo.name, retrievedTodo.shortDesc, '', retrievedTodo.date));
+      todos.push(new Todo(retrievedTodo.id, retrievedTodo.name, retrievedTodo.shortDesc, '', retrievedTodo.date));
     }
 
     updateTodoList(todoListContainer, todos)

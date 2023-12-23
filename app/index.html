@@ -33,7 +33,7 @@
 
             const todos = [];
             for (const retrievedTodo of data) {
-              todos.push(new Todo(null, retrievedTodo.name, retrievedTodo.shortDesc, '', retrievedTodo.date));
+              todos.push(new Todo(retrievedTodo.id, retrievedTodo.name, retrievedTodo.shortDesc, '', retrievedTodo.date));
             }
 
             console.log('formed todos');
@@ -51,12 +51,38 @@
 
   </script>
 
+<script>
+  $( function() {
+    $("#todo-short-description").text("New text in the dialog");
+    $( "#dialog-message" ).dialog({
+      width: 700,
+      height: 500,
+      autoOpen: false,
+      modal: true,
+      buttons: {
+        Ok: function() {
+          $( this ).dialog( "close" );
+        }
+      }
+    });
+  } );
+  </script>
+
 </head>
 
 <body>
   <main>
 
-
+    <div id="dialog-message" title="Подробнее">
+      <span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span>
+      <p id="todo-short-description">
+       
+        todo short description
+      </p>
+      <p id="todo-full-description">
+        todo long description
+      </p>
+    </div>
 
     <div class="container">
 
