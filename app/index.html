@@ -13,6 +13,8 @@
   <title>Your Website Title</title>
   <link rel="stylesheet" href="styles.css">
 
+  <script src="fetcher.js"></script>
+
   <script>
     $(function () {
       $("#datepicker").datepicker({
@@ -22,7 +24,24 @@
           $('.selected-date').html(dateText);
 
           console.log(new Date(dateText));
-          console.log(formatDate(dateText))
+          console.log(formatDate(dateText));
+
+          getTodoByDate(dateText, (data) => {
+            console.log('getting todos');
+            console.log(data);
+
+
+            const todos = [];
+            for (const retrievedTodo of data) {
+              todos.push(new Todo(null, retrievedTodo.name, retrievedTodo.shortDesc, '', retrievedTodo.date));
+            }
+
+            console.log('formed todos');
+            console.log(todos);
+            console.log('end formed todos');
+
+            updateTodoList(todoListContainer, todos)
+          })
         },
         dateFormat: "yy-mm-dd" // Set the date format here
       });
@@ -40,8 +59,8 @@
 
     <div class="container">
 
-      <h1>Welcome to Your Todo List</h1>
-  
+      <h1>Просмотр списка задач</h1>
+
 
       <header>
         <div class="todo-list__nav">
@@ -55,18 +74,18 @@
 
         <div>
 
- 
 
-        <div class="left-panel">
-          <div id="datepicker"></div>
-          <button>Сегодня</button>
 
-          <button>На неделю</button>
+          <div class="left-panel">
+            <div id="datepicker"></div>
+            <button>Сегодня</button>
+
+            <button>На неделю</button>
+          </div>
+
+
+
         </div>
-
-       
-
-      </div>
 
 
 
@@ -86,7 +105,7 @@
             <div class="todo__status"></div>
             <button class="todo__more-button">More</button>
           </div>
-          --> 
+          -->
 
         </div>
 

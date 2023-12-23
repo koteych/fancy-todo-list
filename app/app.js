@@ -3,6 +3,8 @@
  * requests examples https://todo.doczilla.pro/api/todos/date?from=1637618400000&to=1637618400000
  */
 
+const todoListContainer = document.querySelector('.todo-list');
+
 function Todo(id=null, name='', shortDescription='', fullDescription='', date='', status=false) {
   this.id = id;
   this.name = name;
@@ -10,6 +12,17 @@ function Todo(id=null, name='', shortDescription='', fullDescription='', date=''
   this.fullDescription = fullDescription;
   this.date = date;
   this.status = status;
+}
+
+function updateTodoList(todoListContainer, listTodos) {
+
+  while (todoListContainer.firstChild) {
+    todoListContainer.removeChild(todoListContainer.firstChild);
+  }
+
+  for (todo of listTodos) {
+    appendTodo(todoListContainer, todo);
+  }
 }
 
 function appendTodo(containerElement, todo) {
@@ -24,7 +37,7 @@ function appendTodo(containerElement, todo) {
 
   const todoDate = document.createElement('span');
   todoDate.className = 'todo__date';
-  todoDate.textContent = '2021-11-22T22:00:00.000+0000';
+  todoDate.textContent = todo.date;
   todoTitle.appendChild(todoDate);
 
   const todoShortDescription = document.createElement('div');
@@ -48,10 +61,17 @@ function appendTodo(containerElement, todo) {
 }
 
 window.addEventListener('DOMContentLoaded', (e) => {
-  const todoListContainer = document.querySelector('.todo-list');
 
-  appendTodo(todoListContainer, new Todo(null, "some new todo", "Краткое описание тудушки"));
-  appendTodo(todoListContainer, new Todo(null, "Еще одна туду", "Еще описание"));
+
+  const todos = [
+    new Todo(null, "some new todo", "Краткое описание тудушки"),
+    new Todo(null, "some new todo", "Краткое описание тудушки"),
+    new Todo(null, "some new todo", "Краткое описание тудушки"),
+    new Todo(null, "some new todo", "Краткое описание тудушки"),
+    new Todo(null, "some new todo", "Краткое описание тудушки"),
+  ];
+
+  updateTodoList(todoListContainer, todos)
 })
 
 
@@ -64,6 +84,8 @@ function formatDate(date) {
   const p = (new Date(date)).getTime();
   return p;
 }
+
+console.log(formatDate('2021-11-22'));
 
 
 fetch('http://localhost:4400/api/todos')
