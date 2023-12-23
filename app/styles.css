@@ -7,10 +7,22 @@ div.todo-list {
     padding: 10px;
     overflow-y: scroll;
     height: 700px;
+    width: 100%;
 }
 
 div.todo-list__nav {
     border: 2px dashed black;
+    position: relative;
+}
+
+span.todo__date {
+    font-size: 13px;
+}
+
+div.selected-date {
+    position: absolute;
+    right: 0px;
+    top: 0px;
 }
 
 div.todo {
@@ -46,6 +58,10 @@ div.container {
 
 div.left-panel {
 
+}
+
+.todo__status {
+    font-size: 12px;
 }
 
 @media (max-width: 800px) {
