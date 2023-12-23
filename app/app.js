@@ -1,10 +1,12 @@
 
-/** 
- * requests examples https://todo.doczilla.pro/api/todos/date?from=1637618400000&to=1637618400000
- * https://todo.doczilla.pro/api/todos/find?q=molestie
- */
-
+/** Hardcoded for better presentation */
 const DEFAULT_DATE = '2022-10-07';
+
+/** 
+ *  Global object, we contain here all todos that are currently displayed.
+ *  This is required for proper sorting and filtering
+*/
+let todos = [];
 
 const todoListContainer = document.querySelector('.todo-list');
 const searchButton = document.querySelector('.search-button');
@@ -13,32 +15,28 @@ const selectedDate = document.querySelector('.selected-date');
 
 todoListContainer.addEventListener('click', (e) => {
   if (String(e.target.tagName).toLowerCase() === 'button') {
-      $("#todo-short-description").text("New text in the dialog");
-      $( "#dialog-message" ).dialog('open');
+    for (let todo of todos) {
+      if (todo.id === e.target.id) {
+        showTodoInfoInModal(todo);
+        break;
+      }
+    }
   }
 })
 
+/**
+ * Search field handling
+ */
 searchButton.addEventListener('click', (e) => {
   const searchString = searchField.value;
   getTodoByName(searchString, (data) => {
-    console.log('getting todos');
-    console.log(data);
-
-
-    const todos = [];
-    for (const retrievedTodo of data) {
-      todos.push(new Todo(retrievedTodo.id, retrievedTodo.name, retrievedTodo.shortDesc, '', retrievedTodo.date));
-    }
-
-    console.log('formed todos');
-    console.log(todos);
-    console.log('end formed todos');
-
-    updateTodoList(todoListContainer, todos)
+    updateTodosWithData(data);
+    const onlyDoneTodos = todos.filter((todo) => (false));
+    updateTodoList(todoListContainer, onlyDoneTodos);
   })
 })
 
-function Todo(id=null, name='', shortDescription='', fullDescription='', date='', status=false) {
+function Todo(id = null, name = '', shortDescription = '', fullDescription = '', date = '', status = false) {
   this.id = id;
   this.name = name;
   this.shortDescription = shortDescription;
@@ -58,65 +56,33 @@ function updateTodoList(todoListContainer, listTodos) {
   }
 }
 
-function appendTodo(containerElement, todo) {
-  const todoElement = document.createElement('div');
-  todoElement.className = 'todo';
-  todoElement.id = 'id';
-
-  const todoTitle = document.createElement('h2');
-  todoTitle.textContent = todo.name;
-  todoTitle.className = 'todo__name';
-  todoElement.appendChild(todoTitle);
-
-  const todoDate = document.createElement('span');
-  todoDate.className = 'todo__date';
-  todoDate.textContent = todo.date;
-  todoTitle.appendChild(todoDate);
-
-  const todoShortDescription = document.createElement('div');
-  todoShortDescription.textContent = todo.shortDescription;
-  todoShortDescription.className = 'todo__short-description';
-
-  todoElement.appendChild(todoShortDescription);
-
-  const todoStatus = document.createElement('div');
-  todoStatus.textContent = todo.status;
-  todoStatus.className = 'todo__status';
-  todoElement.appendChild(todoStatus);
-
-  const moreButton = document.createElement('button');
-  moreButton.className = 'todo__more-button';
-  moreButton.textContent = 'Подробнее';
-  moreButton.id = todo.id;
-
-  todoElement.appendChild(moreButton);
-
-  containerElement.appendChild(todoElement);
-}
-
 window.addEventListener('DOMContentLoaded', (e) => {
   selectedDate.innerHTML = DEFAULT_DATE;
   getTodoByDate(DEFAULT_DATE, (data) => {
-    console.log('getting todos');
-    console.log(data);
-
-
-    const todos = [];
+    todos = [];
     for (const retrievedTodo of data) {
-      todos.push(new Todo(retrievedTodo.id, retrievedTodo.name, retrievedTodo.shortDesc, '', retrievedTodo.date));
+      todos.push(new Todo(retrievedTodo.id, retrievedTodo.name, retrievedTodo.shortDesc, retrievedTodo.fullDesc, retrievedTodo.date));
     }
 
     updateTodoList(todoListContainer, todos)
   })
 })
 
-
-
-function renderTodo() {
-
-}
-
 function formatDate(date) {
   const p = (new Date(date)).getTime();
   return p;
+}
+
+function showTodoInfoInModal(todo) {
+  $("#todo-short-description").text(todo.shortDescription);
+  $("#todo-full-description").text(todo.fullDescription);
+  $("#dialog-message").dialog('open');
+}
+
+function updateTodosWithData(data) {
+  todos = [];
+
+  for (const retrievedTodo of data) {
+    todos.push(new Todo(retrievedTodo.id, retrievedTodo.name, retrievedTodo.shortDesc, retrievedTodo.fullDesc, retrievedTodo.date));
+  }
 }
