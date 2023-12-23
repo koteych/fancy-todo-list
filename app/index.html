@@ -10,7 +10,7 @@
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Your Website Title</title>
+  <title>Todo List</title>
   <link rel="stylesheet" href="styles.css">
 
   <script src="fetcher.js"></script>
@@ -43,7 +43,8 @@
             updateTodoList(todoListContainer, todos)
           })
         },
-        dateFormat: "yy-mm-dd" // Set the date format here
+        dateFormat: "yy-mm-dd",
+        defaultDate: new Date(DEFAULT_DATE)
       });
     });
 
@@ -64,8 +65,8 @@
 
       <header>
         <div class="todo-list__nav">
-          <input class="search-field" value="hello">
-          <button>Search</button>
+          <input class="search-field" value="molest">
+          <button class="search-button">Search</button>
           <div class="selected-date">hello</div>
         </div>
       </header>

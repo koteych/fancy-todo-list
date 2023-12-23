@@ -2,12 +2,7 @@ function getSome() {
     console.log('get some');
 }
 
-function getTodoByDate(date, callback) {
-    const formattedDate = (new Date(date)).getTime();
-
-    const url = `http://localhost:4400/api/todos/date?from=${formattedDate}&to=${formattedDate + 86400000}`;
-    console.log(url);
-
+function makeRequest(url, callback) {
     fetch(url)
     .then(response => {
       if (!response.ok) {
@@ -21,4 +16,21 @@ function getTodoByDate(date, callback) {
     .catch(error => {
       console.error('Fetch error:', error);
     });
+}
+
+function getTodoByDate(date, callback) {
+    const formattedDate = (new Date(date)).getTime();
+    const millisPerDay = 86400000;
+
+    const url = `http://localhost:4400/api/todos/date?from=${formattedDate}&to=${formattedDate + millisPerDay}`;
+    console.log(url);
+
+    makeRequest(url, callback);
+}
+
+function getTodoByName(name, callback) {
+    const url = `http://localhost:4400/api/todos/find?q=${name}`;
+    console.log(url);
+
+    makeRequest(url, callback);
 }

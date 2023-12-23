@@ -1,9 +1,35 @@
 
 /** 
  * requests examples https://todo.doczilla.pro/api/todos/date?from=1637618400000&to=1637618400000
+ * https://todo.doczilla.pro/api/todos/find?q=molestie
  */
 
+const DEFAULT_DATE = '2022-10-07';
+
 const todoListContainer = document.querySelector('.todo-list');
+const searchButton = document.querySelector('.search-button');
+const searchField = document.querySelector('.search-field');
+const selectedDate = document.querySelector('.selected-date');
+
+searchButton.addEventListener('click', (e) => {
+  const searchString = searchField.value;
+  getTodoByName(searchString, (data) => {
+    console.log('getting todos');
+    console.log(data);
+
+
+    const todos = [];
+    for (const retrievedTodo of data) {
+      todos.push(new Todo(null, retrievedTodo.name, retrievedTodo.shortDesc, '', retrievedTodo.date));
+    }
+
+    console.log('formed todos');
+    console.log(todos);
+    console.log('end formed todos');
+
+    updateTodoList(todoListContainer, todos)
+  })
+})
 
 function Todo(id=null, name='', shortDescription='', fullDescription='', date='', status=false) {
   this.id = id;
@@ -47,7 +73,7 @@ function appendTodo(containerElement, todo) {
   todoElement.appendChild(todoShortDescription);
 
   const todoStatus = document.createElement('div');
-  todoStatus.textContent = 'status';
+  todoStatus.textContent = todo.status;
   todoStatus.className = 'todo__status';
   todoElement.appendChild(todoStatus);
 
@@ -61,17 +87,19 @@ function appendTodo(containerElement, todo) {
 }
 
 window.addEventListener('DOMContentLoaded', (e) => {
+  selectedDate.innerHTML = DEFAULT_DATE;
+  getTodoByDate(DEFAULT_DATE, (data) => {
+    console.log('getting todos');
+    console.log(data);
 
 
-  const todos = [
-    new Todo(null, "some new todo", "Краткое описание тудушки"),
-    new Todo(null, "some new todo", "Краткое описание тудушки"),
-    new Todo(null, "some new todo", "Краткое описание тудушки"),
-    new Todo(null, "some new todo", "Краткое описание тудушки"),
-    new Todo(null, "some new todo", "Краткое описание тудушки"),
-  ];
+    const todos = [];
+    for (const retrievedTodo of data) {
+      todos.push(new Todo(null, retrievedTodo.name, retrievedTodo.shortDesc, '', retrievedTodo.date));
+    }
 
-  updateTodoList(todoListContainer, todos)
+    updateTodoList(todoListContainer, todos)
+  })
 })
 
 
@@ -84,20 +112,3 @@ function formatDate(date) {
   const p = (new Date(date)).getTime();
   return p;
 }
-
-console.log(formatDate('2021-11-22'));
-
-
-fetch('http://localhost:4400/api/todos')
-  .then(response => {
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-    return response.json();
-  })
-  .then(data => {
-    console.log(data);
-  })
-  .catch(error => {
-    console.error('Fetch error:', error);
-  });
