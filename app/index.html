@@ -33,7 +33,9 @@
 
             todos = [];
             for (const retrievedTodo of data) {
-              todos.push(new Todo(retrievedTodo.id, retrievedTodo.name, retrievedTodo.shortDesc, retrievedTodo.fullDesc, retrievedTodo.date));
+              todos.push(new Todo(retrievedTodo.id, retrievedTodo.name,
+               retrievedTodo.shortDesc, retrievedTodo.fullDesc, 
+               retrievedTodo.date, retrievedTodo.status));
             }
 
             console.log('formed todos');
@@ -94,6 +96,7 @@
           <input class="search-field" value="molest">
           <button class="search-button">Search</button>
           <div class="selected-date">hello</div>
+          <label><input type="checkbox" class="only-undone-todos">Только невыполненные</label>
         </div>
       </header>
 
@@ -105,9 +108,8 @@
 
           <div class="left-panel">
             <div id="datepicker"></div>
-            <button>Сегодня</button>
-
-            <button>На неделю</button>
+            <button class="today-button">Сегодня</button>
+            <button class="this-week-button">На неделю</button>
           </div>
 
 
