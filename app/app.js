@@ -1,13 +1,11 @@
 
-/** Hardcoded for better presentation */
-const DEFAULT_DATE = '2022-10-07';
-
 /** 
  *  Global object, we contain here all todos that are currently displayed.
  *  This is required for proper sorting and filtering
 */
 let todos = [];
 let onlyUndoneFlag = false;
+let sortByDateFlag = false;
 
 const todoListContainer = document.querySelector('.todo-list');
 const searchButton = document.querySelector('.search-button');
@@ -16,6 +14,10 @@ const selectedDate = document.querySelector('.selected-date');
 const todayButton = document.querySelector('.today-button');
 const thisWeekButton = document.querySelector('.this-week-button'); 
 const onlyUndoneCheckbox = document.querySelector('.only-undone-todos');
+const sortByDateCheckbox = document.querySelector('.sort-by-date-checkbox');
+
+/** Hardcoded for better presentation because there are no up-to-date todos on 2023 */
+const DEFAULT_DATE = '2022-10-07';
 
 todoListContainer.addEventListener('click', (e) => {
   if (String(e.target.tagName).toLowerCase() === 'button') {
@@ -28,17 +30,14 @@ todoListContainer.addEventListener('click', (e) => {
   }
 })
 
+sortByDateCheckbox.addEventListener('click', (e) => {
+  sortByDateFlag = !!sortByDateCheckbox.checked;
+  updateTodoList(todoListContainer, todos);
+})
 
-/** Display only undone todos */
 onlyUndoneCheckbox.addEventListener('click', (e) => {
   onlyUndoneFlag = !!onlyUndoneCheckbox.checked;
-  const onlyDoneTodos = todos.filter((todo) => {
-    if (onlyUndoneFlag) {
-      return todo.status === false;
-    }
-    return true;
-  });
-  updateTodoList(todoListContainer, onlyDoneTodos);
+  updateTodoList(todoListContainer, todos);
 })
 
 /**
@@ -81,13 +80,41 @@ function Todo(id = null, name = '', shortDescription = '', fullDescription = '',
   this.status = status;
 }
 
+function applyShowUndoneFiltering(todosList) {
+  const onlyUndoneTodos = todosList.filter((todo) => {
+    if (onlyUndoneFlag) {
+      return todo.status === false;
+    }
+    return true;
+  });
+
+  return onlyUndoneTodos;
+}
+
+function applySortByDateFiltering(todosList) {
+  const sortedByDateTodos = todosList.slice().sort((a, b) => {
+    if (sortByDateFlag) {
+      // TODO: constructing Date objects in filtering logic is expensive
+      // we should do that in Todo constructor
+      return new Date(a.date) - new Date(b.date);
+    } else {
+      return new Date(b.date) - new Date(a.date);
+    }
+  });
+  return sortedByDateTodos;
+}
+
 function updateTodoList(todoListContainer, listTodos) {
+  let filteredTodos = [];
 
   while (todoListContainer.firstChild) {
     todoListContainer.removeChild(todoListContainer.firstChild);
   }
 
-  for (todo of listTodos) {
+  /* We can filter by different criteria by piping filtering functions */
+  filteredTodos = applyShowUndoneFiltering(applySortByDateFiltering(listTodos));
+
+  for (todo of filteredTodos) {
     appendTodo(todoListContainer, todo);
   }
 }

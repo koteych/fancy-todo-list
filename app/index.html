@@ -15,60 +15,8 @@
 
   <script src="fetcher.js"></script>
   <script src="renderer.js"></script>
-
-  <script>
-    $(function () {
-      $("#datepicker").datepicker({
-        onSelect: function (dateText, inst) {
-          // Handle the selected date here
-          console.log("Selected date: " + dateText);
-          $('.selected-date').html(dateText);
-
-          console.log(new Date(dateText));
-          console.log(formatDate(dateText));
-
-          getTodoByDate(dateText, (data) => {
-            console.log('getting todos');
-            console.log(data);
-
-            todos = [];
-            for (const retrievedTodo of data) {
-              todos.push(new Todo(retrievedTodo.id, retrievedTodo.name,
-               retrievedTodo.shortDesc, retrievedTodo.fullDesc, 
-               retrievedTodo.date, retrievedTodo.status));
-            }
-
-            console.log('formed todos');
-            console.log(todos);
-            console.log('end formed todos');
-
-            updateTodoList(todoListContainer, todos)
-          })
-        },
-        dateFormat: "yy-mm-dd",
-        defaultDate: new Date(DEFAULT_DATE)
-      });
-    });
-
-
-  </script>
-
-<script>
-  $( function() {
-    $("#todo-short-description").text("New text in the dialog");
-    $( "#dialog-message" ).dialog({
-      width: 700,
-      height: 500,
-      autoOpen: false,
-      modal: true,
-      buttons: {
-        Ok: function() {
-          $( this ).dialog( "close" );
-        }
-      }
-    });
-  } );
-  </script>
+  <script src="calendar.js"></script>
+  <script src="modal.js"></script>
 
 </head>
 
@@ -78,7 +26,7 @@
     <div id="dialog-message" title="Подробнее о задаче">
       <span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span>
       <p id="todo-short-description">
-       
+
         todo short description
       </p>
       <p id="todo-full-description">
@@ -97,6 +45,7 @@
           <button class="search-button">Search</button>
           <div class="selected-date">hello</div>
           <label><input type="checkbox" class="only-undone-todos">Только невыполненные</label>
+          <label><input type="checkbox" class="sort-by-date-checkbox">Сначала старые</label>
         </div>
       </header>
 

@@ -1,4 +1,12 @@
 
+function formatDateForView(dateToFormat) {
+  let date = new Date(dateToFormat);
+  let options = { timeZone: 'UTC', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
+  let formattedDate = date.toLocaleDateString('ru-RU', options);
+
+  return formattedDate;
+}
+
 function appendTodo(containerElement, todo) {
     const todoElement = document.createElement('div');
     todoElement.className = 'todo';
@@ -11,7 +19,8 @@ function appendTodo(containerElement, todo) {
   
     const todoDate = document.createElement('span');
     todoDate.className = 'todo__date';
-    todoDate.textContent = todo.date;
+
+    todoDate.textContent = formatDateForView(todo.date);
     todoTitle.appendChild(todoDate);
   
     const todoShortDescription = document.createElement('div');
@@ -21,16 +30,23 @@ function appendTodo(containerElement, todo) {
     todoElement.appendChild(todoShortDescription);
   
     const todoStatus = document.createElement('div');
-    todoStatus.textContent = todo.status;
+    todoStatus.textContent = todo.status? 'Выполнено': 'Не выполнено';
     todoStatus.className = 'todo__status';
+    if (todo.status)
+      todoStatus.classList.add('todo__status-done');
     todoElement.appendChild(todoStatus);
+
+    const todoFooter = document.createElement('div');
+    todoFooter.className = 'todo__footer';
+    
+    todoElement.appendChild(todoFooter);
   
     const moreButton = document.createElement('button');
     moreButton.className = 'todo__more-button';
     moreButton.textContent = 'Подробнее';
     moreButton.id = todo.id;
   
-    todoElement.appendChild(moreButton);
+    todoFooter.appendChild(moreButton);
   
     containerElement.appendChild(todoElement);
   }

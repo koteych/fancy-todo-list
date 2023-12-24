@@ -68,7 +68,26 @@ label {
     user-select: none;
 }
 
-@media (max-width: 800px) {
+.todo__name {
+    position: relative;
+}
+
+.todo__footer {
+    text-align: right;
+}
+
+.todo__name .todo__date {
+    position: static;
+    right: 0px;
+    padding: 5px;
+    margin-left: 12px;
+}
+
+.todo__status-done {
+    color: green;
+}
+
+@media (max-width: 1000px) {
     div.row {
         display: block;
     }
