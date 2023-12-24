@@ -2,7 +2,6 @@ $(function () {
 
   $("#datepicker").datepicker({
     onSelect: function (dateText, inst) {
-      console.log("Selected date: " + dateText);
       $('.selected-date').html(dateText);
 
       DEFAULT_DATE = dateText;

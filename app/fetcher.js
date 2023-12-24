@@ -23,7 +23,6 @@ function getTodosByDateRange(startDate, endDate) {
     const formattedEndDate = (new Date(endDate)).getTime();
 
     const url = `${API_URL}/date?from=${formattedStartDate}&to=${formattedEndDate}`;
-    console.log(url);
 
     makeRequest(url, callback);
 }
@@ -33,14 +32,12 @@ function getTodoByDate(date, callback) {
     const millisPerDay = 86400000;
 
     const url = `${API_URL}/date?from=${formattedDate}&to=${formattedDate + millisPerDay}`;
-    console.log(url);
 
     makeRequest(url, callback);
 }
 
 function getTodoByName(name, callback) {
     const url = `${API_URL}/find?q=${name}`;
-    console.log(url);
 
     makeRequest(url, callback);
 }
@@ -49,7 +46,6 @@ function getTodosForToday(callback) {
     getTodoByDate(new Date(), callback);
 }
 
-/** This is not what we're looking for by the way */
 function getTodosForThisWeek(selectedDate, callback) {
     let date = new Date(selectedDate);
 
@@ -75,7 +71,6 @@ function getTodosForThisWeek(selectedDate, callback) {
     console.log(lastDayOfTheWeek);
 
     const url = `${API_URL}/date?from=${firstDayOfTheWeek.getTime()}&to=${lastDayOfTheWeek.getTime()}`;
-    console.log(url);
 
     makeRequest(url, callback);
 }
