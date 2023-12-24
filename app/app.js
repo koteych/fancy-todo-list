@@ -17,7 +17,7 @@ const onlyUndoneCheckbox = document.querySelector('.only-undone-todos');
 const sortByDateCheckbox = document.querySelector('.sort-by-date-checkbox');
 
 /** Hardcoded for better presentation because there are no up-to-date todos on 2023 */
-const DEFAULT_DATE = '2022-10-07';
+let DEFAULT_DATE = '2022-10-07';
 
 todoListContainer.addEventListener('click', (e) => {
   if (String(e.target.tagName).toLowerCase() === 'button') {
@@ -44,18 +44,18 @@ onlyUndoneCheckbox.addEventListener('click', (e) => {
  * This week button
  */
 thisWeekButton.addEventListener('click', (e) => {
-    console.log('getting todos for this week')
+    let selectedDate = $('#datepicker').datepicker('getDate');
+
+    getTodosForThisWeek(selectedDate, (data)=> {
+      updateTodosWithData(data);
+      updateTodoList(todoListContainer, todos);
+    });
 })
 
-/**
- * Today button
- */
 todayButton.addEventListener('click', (e) => {
-  getTodosForToday((data) => {
-    updateTodosWithData(data);
-    const onlyDoneTodos = todos.filter((todo) => (true));
-    updateTodoList(todoListContainer, onlyDoneTodos);
-  })
+  /**
+   * Already implemented by on click on the calendar widget
+   */
 })
 
 
@@ -132,7 +132,7 @@ window.addEventListener('DOMContentLoaded', (e) => {
   getTodoByDate(DEFAULT_DATE, (data) => {
     todos = [];
     for (const retrievedTodo of data) {
-      todos.push(new Todo(retrievedTodo.id, retrievedTodo.name, retrievedTodo.shortDesc, retrievedTodo.fullDesc, retrievedTodo.date));
+      todos.push(new Todo(retrievedTodo.id, retrievedTodo.name, retrievedTodo.shortDesc, retrievedTodo.fullDesc, retrievedTodo.date, retrievedTodo.status));
     }
 
     updateTodoList(todoListContainer, todos)

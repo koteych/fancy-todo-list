@@ -5,8 +5,7 @@ $(function () {
       console.log("Selected date: " + dateText);
       $('.selected-date').html(dateText);
 
-      console.log(new Date(dateText));
-      console.log(formatDate(dateText));
+      DEFAULT_DATE = dateText;
 
       getTodoByDate(dateText, (data) => {
 
@@ -21,6 +20,7 @@ $(function () {
       })
     },
     dateFormat: "yy-mm-dd",
-    defaultDate: new Date(DEFAULT_DATE)
+    defaultDate: new Date(DEFAULT_DATE),
+    firstDay: 1
   });
 });

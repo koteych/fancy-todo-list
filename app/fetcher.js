@@ -50,11 +50,31 @@ function getTodosForToday(callback) {
 }
 
 /** This is not what we're looking for by the way */
-function getTodosForNextWeek(callback) {
-    const formattedDate = (new Date(date)).getTime();
-    const millisPerWeek = 86400000*7;
+function getTodosForThisWeek(selectedDate, callback) {
+    let date = new Date(selectedDate);
 
-    const url = `${API_URL}/date?from=${formattedDate}&to=${formattedDate + millisPerWeek}`;
+    let firstDayOfTheWeek = new Date(date);
+    let lastDayOfTheWeek = new Date(date);
+
+    let diff;
+
+    let day = date.getDay();
+
+    // it's sunday
+    if (day === 0) {
+      lastDayOfTheWeek = date;
+      firstDayOfTheWeek.setDate(lastDayOfTheWeek.getDate() - 6);
+    } else {
+      day = date.getDay(); // Get the day of the week (0-6, where 0 is Sunday)
+      diff = date.getDate() - day + 1; // Calculate the difference to the first day of the week
+      firstDayOfTheWeek = new Date(date.setDate(diff)); 
+      lastDayOfTheWeek.setDate(firstDayOfTheWeek.getDate() + 6);
+    }
+
+    console.log(firstDayOfTheWeek);
+    console.log(lastDayOfTheWeek);
+
+    const url = `${API_URL}/date?from=${firstDayOfTheWeek.getTime()}&to=${lastDayOfTheWeek.getTime()}`;
     console.log(url);
 
     makeRequest(url, callback);
