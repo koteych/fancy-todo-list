@@ -50,3 +50,11 @@ function appendTodo(containerElement, todo) {
   
     containerElement.appendChild(todoElement);
   }
+
+  function noTodoStub(containerElement) {
+    const noTodos = document.createElement('div');
+    noTodos.textContent = 'Задач нет';
+    noTodos.className = 'todo__no-todos';
+
+    containerElement.appendChild(noTodos)
+  }

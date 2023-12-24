@@ -114,6 +114,14 @@ function updateTodoList(todoListContainer, listTodos) {
   /* We can filter by different criteria by piping filtering functions */
   filteredTodos = applyShowUndoneFiltering(applySortByDateFiltering(listTodos));
 
+  console.log('filtered todos')
+  console.log(filteredTodos);
+
+  if (filteredTodos.length === 0) {
+    noTodoStub(todoListContainer);
+    return;
+  }
+
   for (todo of filteredTodos) {
     appendTodo(todoListContainer, todo);
   }

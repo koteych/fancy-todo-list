@@ -25,8 +25,8 @@ div.selected-date {
     top: 0px;
 }
 
-div.todo {
-
+div.todo__no-todos {
+    text-align: center;
 }
 
 input {
