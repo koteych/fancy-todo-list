@@ -1,6 +1,5 @@
-function getSome() {
-    console.log('get some');
-}
+
+const API_URL = 'http://localhost:4400/api/todos';
 
 function makeRequest(url, callback) {
     console.log('Performing a query: ' + url);
@@ -23,7 +22,7 @@ function getTodosByDateRange(startDate, endDate) {
     const formattedStartDate = (new Date(startDate)).getTime();
     const formattedEndDate = (new Date(endDate)).getTime();
 
-    const url = `http://localhost:4400/api/todos/date?from=${formattedStartDate}&to=${formattedEndDate}`;
+    const url = `${API_URL}/date?from=${formattedStartDate}&to=${formattedEndDate}`;
     console.log(url);
 
     makeRequest(url, callback);
@@ -33,14 +32,14 @@ function getTodoByDate(date, callback) {
     const formattedDate = (new Date(date)).getTime();
     const millisPerDay = 86400000;
 
-    const url = `http://localhost:4400/api/todos/date?from=${formattedDate}&to=${formattedDate + millisPerDay}`;
+    const url = `${API_URL}/date?from=${formattedDate}&to=${formattedDate + millisPerDay}`;
     console.log(url);
 
     makeRequest(url, callback);
 }
 
 function getTodoByName(name, callback) {
-    const url = `http://localhost:4400/api/todos/find?q=${name}`;
+    const url = `${API_URL}/find?q=${name}`;
     console.log(url);
 
     makeRequest(url, callback);
@@ -55,7 +54,7 @@ function getTodosForNextWeek(callback) {
     const formattedDate = (new Date(date)).getTime();
     const millisPerWeek = 86400000*7;
 
-    const url = `http://localhost:4400/api/todos/date?from=${formattedDate}&to=${formattedDate + millisPerWeek}`;
+    const url = `${API_URL}/date?from=${formattedDate}&to=${formattedDate + millisPerWeek}`;
     console.log(url);
 
     makeRequest(url, callback);
