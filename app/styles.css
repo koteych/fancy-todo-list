@@ -87,6 +87,10 @@ label {
     color: green;
 }
 
+.autocomplete-widget {
+    margin-top: 20px;
+}
+
 @media (max-width: 1000px) {
     div.row {
         display: block;
